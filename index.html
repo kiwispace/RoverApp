@@ -200,11 +200,10 @@
 				  <div class="tab-pane" id="camera" style="text-align: center;">
 				  	<br>
 				  	
-				  	<form class="form">
-				  	
+				  	<form class="form" onsubmit="setCookie('webcam', $('#cameraUrl').val(), 365); cameraImageUrl = getCookie('webcam'); return false;">
 				  	<p>Enter the IMAGE URL of your webcam here:</p>
 				  	<input placeholder="e.g. http://192.168.1.1/image.jpg" type="text" class="form-control" id="cameraUrl" value="">
-					<button type="button" class="btn btn-primary" onclick="setCookie('webcam', $('#cameraUrl').val(), 365); cameraImageUrl = getCookie('webcam');">Save to Cookie</button>
+					<button type="submit" class="btn btn-primary">Save to Cookie</button>
 				  	</form>
 				  	<p>
 				  		This page works with any Webcam that returns an IMAGE via a specific URL. The script makes a request every hundred milliseconds or so to this, to simulate a live video feed -- but delays displaying the image for delay specified by the slider.
