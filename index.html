@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>KiwiSpace: Time-Delay Rover</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-slider.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <style>
+    	.slider { margin-top: 30px; }
+    
+    	.jumbotron {
+    		padding: 20px;
+    		background-color: #0E649F;
+    		background-image: url(img/kiwispacelogo.png);
+    		background-repeat: no-repeat;
+    		color: #FFF449;
+    		background-position: 99% ;
+
+    		*background-image: url(marsmap1b.jpg);
+    		*background-position: center;
+    		*text-shadow: 1px 1px #fff;
+    		*color: #001b8c;
+    	}
+    	.lead {
+    		font-size: 2.3em !important;
+    		*background-color: #fff;
+    	}
+    
+		body {
+		  *padding-top: 50px;
+		}
+		.starter-template {
+		  padding: 40px 15px;
+		  text-align: center;
+		}
+		
+		/* Sticky footer styles
+		-------------------------------------------------- */
+		html {
+		  position: relative;
+		  min-height: 100%;
+		}
+		body {
+		  /* Margin bottom by footer height */
+		  margin-bottom: 60px;
+		}
+		#footer {
+		  position: absolute;
+		  bottom: 0;
+		  width: 100%;
+		  text-align: center;
+		  /* Set the fixed height of the footer here */
+		  height: 60px;
+
+		  background-color: #0E649F;
+		  font-size: 30px;
+		  padding-top: 6px;
+		  color: #fff;
+		}
+
+		
+		/* ------ STOPWATCH CSS ------- */
+		#stopwatchcontainer {position:relative; z-index:100; width:325px; padding:20px; margin:20px auto 0; border:8px solid rgba(0, 0, 0, 0.5); border-radius:8px; -moz-border-radius:8px; -webkit-border-radius:8px; background:#EEE;}
+		#timer {margin:0; font-size:48px; line-height:48px; color:#C00; text-shadow:#FFF 0 1px 0;}
+		#controls {height:25px; margin:0 0 20px; padding:0; list-style:none;}
+		#controls li {display:inline; float:left; margin-right:5px;}
+		#controls li:last-child, #controls li.last {margin-right:0;}
+		#controls li a {display:block; width:85px; text-align:center; line-height:24px; color:#FFF; text-shadow:#000 0 -1px 0; text-decoration:none; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -moz-box-shadow:rgba(0, 0, 0, 0.5) 1px 1px 0; -webkit-box-shadow:rgba(0, 0, 0, 0.5) 0 1px 3px; outline:none;}
+					 #start {background:#090;}
+					 #split {background:#069;}
+					 #reset {background:#C00;}
+		#controls li a:hover {background:#333;}
+		#controls li a:active {position:relative; top:1px;}
+		#splits {display:none; margin:20px 0 0; padding:0; list-style:none; border:1px solid #666; -moz-box-shadow:inset rgba(0, 0, 0, 0.3) 0 0 5px; -webkit-box-shadow:inset rgba(0, 0, 0, 0.3) 0 0 5px; border-radius:8px; -moz-border-radius:8px; -webkit-border-radius:8px; background:#F9F9F9;}
+		#splits li {display:none; padding-left:10px; font-size:18px; text-shadow:#FFF 0 1px 0; line-height:30px; border-bottom:1px solid #CCC; border-top:1px solid #FFF;}
+		#splits li span {margin-right:10px; padding:0 2px; color:#FFF; text-shadow:#666 0 -1px 0; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; background:#999;}
+		#splits li:first-child, #splits li.first {border-top:none;}
+		#splits li:last-child, #splits li.last {border-bottom:none;}
+		#labels {color:#666; text-shadow:#FFF 0 1px 0;}
+		#labels span {margin-left:48px;}
+		
+	</style>    
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+	<div class="jumbotron">
+		<h1>Time-Delay Rover Simulation</h1>
+		<p class="lead">&nbsp;Can you successfully navigate a rover on another planet? </p>
+	</div>
+
+    <div class="container-fluid">
+
+
+		<table width="100%">
+		<tr>
+			<td colspan="2">
+
+			</td>
+		</tr>
+		<tr valign="top">
+			<td width="650">
+				<img id="image" alt="Rover Camera" width="640" height="480" /><br/>
+			</td>
+			<td style="padding-left: 20px;">
+
+				<div style="color:#777;font-size:48px;text-align:center;">One-way Video Delay</div>
+
+				<!--  The div that is used as the slider container  -->
+				<div style="text-align:center;">
+					<div id="slider" style="margin-top:10px; border: 1px solid;"></div>
+				</div>
+  
+				<!--  The div that is used to display the slider value  -->
+				<div id="amount" style="color:#777;font-size:72px;font-weight:bold;text-align:center;"></div>
+				
+
+
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs">
+				  <li class="active"><a href="#stopwatch" data-toggle="tab">Stopwatch</a></li>
+				  <li><a href="#home" data-toggle="tab">How Long?</a></li>
+				  <li><a href="#camera" data-toggle="tab">Camera Setup</a></li>
+				</ul>
+
+				<!-- Tab panes -->
+				<div class="tab-content">
+				  <div class="tab-pane active" id="stopwatch">
+						<div id="stopwatchcontainer">
+							<ul id="controls">
+								<li><a href="#" id="start" alternate="Stop">Start</a></li>
+								<li><a href="#" id="split">Split</a></li>
+								<li><a href="#" id="reset">Reset</a></li>
+							</ul>
+							<h2 id="timer">00:00:00.00</h2>
+							<small id="labels">HOUR<span>MIN</span><span>SEC</span><span>1/100</span></small>
+							<ul id="splits">
+								<li></li>
+							</ul>
+						</div>
+				  </div>
+				  <div class="tab-pane" id="home">
+						<table class="table table-condensed">
+						<tr>
+							<td><b>Target</b></th>
+							<td align="right"><b>Distance</b></th>
+							<td align="right"><b>One-Way Delay</b></th>
+						</tr>
+						<tr>
+							<td>Geo-Satellite</td>
+							<td align="right">~36,000 km</td>
+							<td align="right">0.12 seconds</td>
+						</tr>
+						<tr>
+							<td>Earth-Moon</td>
+							<td align="right">384,000 km</td>
+							<td align="right">1.3 seconds</td>
+						</tr>
+						<tr>
+							<td>Earth-Mars</td>
+							<td align="right">55 - 378 million km</td>
+							<td align="right">3 - 21 mins</td>
+						</tr>
+						<tr>
+							<td>Earth-Jupiter</td>
+							<td align="right">590 - 970 million km</td>
+							<td align="right">33 - 53 mins</td>
+						</tr>
+						<tr>
+							<td>Earth-Pluto</td>
+							<td align="right">~5,800 million km</td>
+							<td align="right">5 hours</td>
+						</tr>
+						<tr>
+							<td>Earth-Nearest Star</td>
+							<td align="right">~9.5 million million km</td>
+							<td align="right">4 years</td>
+						</tr>
+						</table>
+
+				  </div>
+				  <div class="tab-pane" id="camera" style="text-align: center;">
+				  	<br>
+				  	
+				  	<form class="form">
+				  	
+				  	<p>Enter the IMAGE URL of your webcam here:</p>
+				  	<input placeholder="e.g. http://192.168.1.1/image.jpg" type="text" class="form-control" id="cameraUrl" value="">
+					<button type="button" class="btn btn-primary" onclick="setCookie('webcam', $('#cameraUrl').val(), 365); cameraImageUrl = getCookie('webcam');">Save to Cookie</button>
+				  	</form>
+				  	<p>
+				  		This page works with any Webcam that returns an IMAGE via a specific URL. The script makes a request every hundred milliseconds or so to this, to simulate a live video feed -- but delays displaying the image for delay specified by the slider.
+				  	</p>
+				  	<p>
+				  		For our rover camera, we used an iPhone running <a target="_blank" href="https://itunes.apple.com/nz/app/airbeam-live-hd-video-surveillance/id428767956?mt=8">AirBeam</a>. Any webcam app should work.
+				  	</p>
+
+				  
+				  </div>
+
+				</div>
+
+				
+				
+
+				
+				
+			</td>
+		</tr>
+		</table>
+
+		
+    </div><!-- /.container -->
+    <div id="footer" style="padding-left: 30px; padding-right: 30px;">
+    	<div class="pull-left">www.kiwispace.org.nz</div>
+        <div class="pull-right">facebook.com/kiwispace</div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	<script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<script src="js/bootstrap-slider.min.js"></script>
+	<script src="js/stopwatch.js"></script>
+	<script>
+
+		// CONFIGURE THESE VALUES AS REQUIRED	
+		var cameraImageUrl = getCookie('webcam');
+		if (cameraImageUrl == '') {
+			alert("FIRST TIME USE: Please configure a webcam using the 'Camera Setup' tab");
+		}
+		
+		var scrapeInterval = 200; // milliseconds
+
+
+		// LEAVE THESE VALUES ALONE
+		var bufferingPlaceholder = "data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAAAKAAD/4QMtaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA1LjMtYzAxMSA2Ni4xNDU2NjEsIDIwMTIvMDIvMDYtMTQ6NTY6MjcgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCBDUzYgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6M0E5RkNBMDNBQzkyMTFFMzg4NkZDMUMwNUVCOUZBREYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6M0E5RkNBMDRBQzkyMTFFMzg4NkZDMUMwNUVCOUZBREYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDozQTlGQ0EwMUFDOTIxMUUzODg2RkMxQzA1RUI5RkFERiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDozQTlGQ0EwMkFDOTIxMUUzODg2RkMxQzA1RUI5RkFERiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pv/uAA5BZG9iZQBkwAAAAAH/2wCEABQQEBkSGScXFycyJh8mMi4m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";
+
+		var buckets = new Array();
+		var delayBuckets = 1;	 // starting number of buckets
+		var bucketCounter = -1;
+        for (i=0; i<delayBuckets; i++) { 
+        	buckets[i] = bufferingPlaceholder;
+        }
+        
+        function storeAndShowNextBucket(dataURL) { 
+			bucketCounter++;
+			if (bucketCounter > delayBuckets) bucketCounter = 0;
+			//console.log("storing in bucket   = " + bucketCounter);
+
+			buckets[bucketCounter] = dataURL;
+			
+			// DISPLAY OLDER BUCKET
+			displayBucket = bucketCounter - delayBuckets + 1;
+			if (displayBucket < 0) displayBucket += delayBuckets;
+			
+			//console.log("  displaying bucket = " + displayBucket);
+			document.getElementById("image").src = buckets[displayBucket];
+        }
+        
+		function init()
+		{
+			if (cameraImageUrl == '') { 
+				storeAndShowNextBucket(bufferingPlaceholder);
+				return;
+			}
+			
+			var now = new Date().getTime();
+			var url = cameraImageUrl + '?r=' + now;
+						
+			var xmlHTTP = new XMLHttpRequest();
+			xmlHTTP.open('GET', url, true);
+			xmlHTTP.responseType = 'arraybuffer';		// Must include this line - specifies the response type we want
+			xmlHTTP.onload = function(e)
+			{
+				var arr = new Uint8Array(this.response);
+
+				// Convert the int array to a binary string
+				// We have to use apply() as we are converting an *array*
+				// and String.fromCharCode() takes one or more single values, not
+				// an array.
+				var raw = String.fromCharCode.apply(null,arr);
+				//console.log("XHR Response: " + raw);
+
+				var b64=btoa(raw);
+				var dataURL="data:image/jpeg;base64,"+b64;
+				
+				//document.getElementById("image").src = dataURL;
+				storeAndShowNextBucket(dataURL); // call my storage function
+			};
+			xmlHTTP.onerror = function(e) {
+				// disable this if want to show the last images (useful for detecting time of failure...)
+				storeAndShowNextBucket(bufferingPlaceholder);
+			}
+			xmlHTTP.send();
+		}
+
+
+		$( document ).ready(function() {
+
+	  		$('#cameraUrl').val(getCookie('webcam'));
+			
+			$( "#slider" ).slider({
+				range: "min",
+				value: delayBuckets * scrapeInterval / 1000,
+				min: scrapeInterval / 1000,
+				max: 10,
+				tooltip: 'always',
+				step: scrapeInterval / 1000,
+				formater: function(value) {
+					return value.toFixed(1); // deal with float handling issues
+				},
+			});
+
+			$("#slider").on('slide', function(slideEvt) {
+				var val = parseFloat(slideEvt.value);
+				
+				// While sliding, update the value in the #amount div element
+				$( "#amount" ).html( "~" + val.toFixed(1) + " secs" );
+	
+				delayBuckets = Math.round( slideEvt.value * 1000 / scrapeInterval );
+	
+				// set buffering image for all buckets
+				for (i=0; i<delayBuckets; i++) { 
+					buckets[i] = bufferingPlaceholder;
+				}
+				
+			});
+
+			// Set the initial slider amount in the #amount div element
+			var value = $( "#slider" ).slider( "getValue" );
+			$( "#amount" ).html( "~" + value + " secs" );
+
+
+			// START THE MAIN PROCESSING LOOP
+			setInterval("init()", scrapeInterval);
+		});
+
+		$(document).keypress(function(e) {
+		  if(e.which == 13 ) { // ENTER
+			startStop();
+		  }
+		  if(e.which == 32 ) { // SPACEBAR
+			startStop();
+		  }
+		  if(e.which == 27){ // SCAPE
+		  	reset();
+		  }
+		});
+
+
+
+		function setCookie(cname,cvalue,exdays) {
+			var d = new Date();
+			d.setTime(d.getTime()+(exdays*24*60*60*1000));
+			var expires = "expires="+d.toGMTString();
+			document.cookie = cname + "=" + cvalue + "; " + expires;
+		}
+
+		function getCookie(cname) {
+			var name = cname + "=";
+			var ca = document.cookie.split(';');
+			for(var i=0; i<ca.length; i++) 
+			{
+				var c = ca[i].trim();
+				if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+			}
+			return "";
+		}
+
+
+	</script>
+   
+  </body>
+</html>
+
+<!--
+			Note: Google Chrome must be started with --disable-web-security flag, as webserver does not provide Cross-Site-Origin header<br/>
+			<tt>/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security</tt><br/>
+-->
