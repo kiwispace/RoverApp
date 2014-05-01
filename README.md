@@ -40,6 +40,13 @@ We found in our testing, that if you download the files and run them from your *
 e.g. for Google Chrome on Mac:
 > /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome **--disable-web-security**
 
+## iPhone Webcam App
+
+We've had success using the Videography iPhone app (https://itunes.apple.com/us/app/videography/id733449617?mt=8). 
+
+The URL to enter is then like: http://192.168.x.x/service/camera/image</tt>
+
+
 
 License
 ----
@@ -48,4 +55,3 @@ License
 * Attribution appreciated - "KiwiSpace Foundation"
 
 **Free Software, Hell Yeah!**
-
